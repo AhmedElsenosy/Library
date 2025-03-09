@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if form.errors %}
+        <p>Your Username or Password is incorrect</p>
+    {% endif %}
+
+    {% if next %}
+        {% if request.user.is_authenticated %}
+            <p>you don't have permistion to see this page</p>
+            {% else %}
+            <p>Please login to see this page</p>
+        {% endif %}
+    {% endif %}
+
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Submit">
+        <input type="hidden" value="{{next}}">
+    </form>
+</body>
+</html>
