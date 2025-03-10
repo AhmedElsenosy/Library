@@ -9,5 +9,17 @@
     <h1>Home Page</h1>
     <p>Total Books : {{BooksNum}}</p>
     <p>Available Books : {{BooksNumAvailable}}</p>
+    {% if request.user.is_authenticated %}
+        <p>You are logged in</p>
+        <p>Welcome: {{request.user.username|title}}</p>
+        <form action="{% url 'logout' %}?next=/accounts/login" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Logout">
+        </form>
+    {% else %}
+        <p>You are logged out</p>
+        <a href="{% url 'login' %}?next={{request.path}}">Login</a>
+        <a href="{% url 'register' %}?next=/accounts/login">Register</a>
+    {% endif %}
 </body>
 </html>

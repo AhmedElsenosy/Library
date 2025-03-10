@@ -1,8 +1,12 @@
-from django.shortcuts import render , HttpResponse
+from django.shortcuts import render 
 from . import models
 from django.views import generic
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
+# @login_required
 def index(request):
     BooksNum = models.Book.objects.all().count()
     BooksNumInstance = models.BookInstance.objects.all().count()
@@ -16,11 +20,17 @@ def index(request):
     return render(request,'index.html',context)
 
 
-class BookCreate(generic.CreateView):
+class BookCreate(LoginRequiredMixin,generic.CreateView):
     model = models.Book
     fields = '__all__'
     success_url = '/cataloge'
     template_name = 'create.html'
+
+class Register(generic.CreateView):
+    form_class = UserCreationForm
+    success_url = '/accounts/login'
+    template_name = 'registration/register.html'
+
 
 class BookDetail(generic.DetailView):
     model = models.Book
