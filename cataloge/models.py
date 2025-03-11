@@ -24,6 +24,7 @@ class Book(models.Model):
     isbin = models.CharField('ISBiN',max_length=50,unique=True)
     genre = models.ManyToManyField(Genre)
     lang = models.ForeignKey(Lang, on_delete=models.SET_NULL, null=True)
+    img = models.ImageField(upload_to='books/')
 
     def __str__(self):
         return self.title
